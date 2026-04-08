@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Basic Calendar</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; padding: 50px; background: #f4f4f4; }
+        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { padding: 10px; text-align: center; border: 1px solid #eee; }
+        th { background: #6c5ce7; color: white; }
+        .today { background: #ff7675; color: white; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2 id="monthTitle"></h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>
+            </tr>
+        </thead>
+        <tbody id="calendarBody"></tbody>
+    </table>
+</div>
+
+<script>
+    const today = new Date();
+    const month = today.getMonth();
+    const year = today.getFullYear();
+
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    document.getElementById("monthTitle").innerText = months[month] + " " + year;
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const totalDays = new Date(year, month + 1, 0).getDate();
+
+    const tableBody = document.getElementById("calendarBody");
+    let date = 1;
+
+    for (let i = 0; i < 6; i++) {
+        let row = document.createElement("tr");
+
+        for (let j = 0; j < 7; j++) {
+            let cell = document.createElement("td");
+
+            if (i === 0 && j < firstDay) {
+                cell.innerText = "";
+            } else if (date > totalDays) {
+                break;
+            } else {
+                cell.innerText = date;
+                if (date === today.getDate() && month === new Date().getMonth() && year === new Date().getFullYear()) {
+                    cell.className = "today";
+                }
+                date++;
+            }
+            row.appendChild(cell);
+        }
+        tableBody.appendChild(row);
+        if (date > totalDays) break; 
+    }
+</script>
+
+</body>
+</html>
